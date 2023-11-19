@@ -1,24 +1,30 @@
-import logo from './logo.svg';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
+import React from 'react';
+import HalamanLogin from './page/login/login';
+import PrivateRoute from './page/utils/PrivateRoutes';
+import Notfound from './page/notfound/Notfound';
+import {ListRoutes} from './page/utils/Routes';
+import Dashboard from './page/dashboard/Dashboard';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+    <Routes>
+      <Route element={<PrivateRoute />}>
+        {ListRoutes.map((item, index) => {
+            return (
+              <Route key={index} path={item.path} element={item.element} />
+            );
+          })
+        }
+      </Route>
+      <Route path="/" element={<Navigate to="/login" />} />
+      <Route path="/login" element={<HalamanLogin/>} />
+      <Route path="/ds" element={<Dashboard/>} />
+      <Route path="*" element={<Notfound/>} />
+    </Routes>
+    </BrowserRouter>
   );
 }
 
